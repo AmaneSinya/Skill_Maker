@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>스킬 이미지 출력이</title>
+  <style>
+    @import url(//fonts.googleapis.com/earlyaccess/nanummyeongjo.css);
+
+    body {
+      background-color: black;
+      color: white;
+      font-family: 'Nanum Myeongjo', serif;
+    }
+
+    form {
+      width: 400px; /* 폼의 너비를 늘려 여백을 확보 */
+      margin: 50px auto;
+      padding: 20px;
+      border: 1px solid white;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
+    }
+
+    label {
+      display: block;
+      margin-bottom: 10px;
+    }
+
+    input {
+      width: 100%;
+      padding: 8px;
+      margin-bottom: 15px;
+      box-sizing: border-box;
+      background-color: black;
+      color: white;
+      border: 1px solid white;
+      border-radius: 5px;
+    }
+
+    input:focus {
+      outline: none;
+      border-color: #00faff;
+      box-shadow: 0 0 5px #00faff;
+    }
+
+    input[type="submit"] {
+      background-color: #00faff;
+      color: black;
+      cursor: pointer;
+    }
+
+    input[type="submit"]:hover {
+      background-color: #0090ff;
+    }
+
+    #outputImageContainer {
+      margin-top: 28px; /* 여백 조정 */
+      overflow: hidden;
+      background: transparent; /* 이미지 배경을 투명으로 설정 */
+    }
+
+    #outputImage {
+      display: block;
+      max-width: 100%;
+      border: 1px solid white;
+    }
+  </style>
+</head>
+<body>
+
+  <form id="imageForm">
+    <label for="name">이름:</label>
+    <input type="text" id="name" name="name" placeholder="이름을 입력하세요">
+
+    <label for="content1">내용1:</label>
+    <input type="text" id="content1" name="content1" placeholder="내용1을 입력하세요">
+
+    <label for="content2">내용2:</label>
+    <input type="text" id="content2" name="content2" placeholder="내용2를 입력하세요">
+
+    <label for="content3">내용3:</label>
+    <input type="text" id="content3" name="content3" placeholder="내용3를 입력하세요">
+
+    <label for="content4">내용4:</label>
+    <input type="text" id="content4" name="content4" placeholder="내용4를 입력하세요">
+
+    <input type="submit" value="이미지다운로드">
+  </form>
+
+  <script>
+    function downloadImage() {
+      var nameValue = document.getElementById('name').value;
+      var content1Value = document.getElementById('content1').value;
+      var content2Value = document.getElementById('content2').value;
+      var content3Value = document.getElementById('content3').value;
+      var content4Value = document.getElementById('content4').value;
+
+      var canvas = document.createElement('canvas');
+      var ctx = canvas.getContext('2d');
+
+      canvas.width = 600; // 캔버스 크기 수정
+      canvas.height = 300; // 캔버스 크기 수정
+
+      // 이미지 투명 배경
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      ctx.fillStyle = 'rgba(0, 0, 0, 0)'; // 투명 배경
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+      // 이미지 테두리 스타일 설정
+      ctx.strokeStyle = 'white';
+      ctx.lineWidth = 3;
+
+      ctx.font = 'bold 40pt "Nanum Myeongjo", serif'; // 이름, 티어 폰트
+      ctx.fillStyle = 'white';
+      ctx.textBaseline = 'middle'; // 텍스트를 수직 중앙 정렬
+      ctx.fillText(nameValue , 28, 53); // 높이 조정
+
+      ctx.font = 'bold 20pt "Nanum Myeongjo", serif'; // 내용 폰트 변경
+      ctx.fillText(content1Value, 28, 117); // 여백 추가
+      ctx.fillText(content2Value, 28, 160); // 여백 추가
+      ctx.fillText(content3Value, 28, 204); // 여백 추가
+      ctx.fillText(content4Value, 28, 248); // 여백 추가
+
+      // 테두리 그리기
+      ctx.strokeRect(0, 0, canvas.width, canvas.height);
+
+      var dataURL = canvas.toDataURL('image/png');
+
+      var link = document.createElement('a');
+      link.href = dataURL;
+      link.download = nameValue + '.png';
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    }
+
+    document.getElementById('imageForm').addEventListener('submit', function (e) {
+      e.preventDefault();
+      downloadImage();
+    });
+  </script>
+
+</body>
+</html>
